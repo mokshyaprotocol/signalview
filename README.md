@@ -1,5 +1,9 @@
 # perpsignal
 
+[![tests + backtest](https://github.com/mokshyaprotocol/signalview/actions/workflows/backtest.yml/badge.svg)](https://github.com/mokshyaprotocol/signalview/actions/workflows/backtest.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
+
 A backtestable **signal engine** for perpetual-futures strategies. Write a
 strategy as a compact expression (or a JSON signal definition), evaluate it
 against OHLCV data, and backtest it into honest metrics — Sharpe, return,
