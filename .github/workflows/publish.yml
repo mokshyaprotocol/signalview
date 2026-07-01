@@ -1,0 +1,33 @@
+name: publish to PyPI
+
+# Publishes the package to PyPI when a GitHub Release is published, using PyPI
+# Trusted Publishing (OIDC) — no API token or secret is stored in the repo; PyPI
+# trusts this workflow by the repo's own identity. One-time setup on PyPI:
+# Account -> Publishing -> add a GitHub publisher with
+#   owner = mokshyaprotocol, repo = signalview,
+#   workflow = publish.yml, environment = pypi
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write          # required for Trusted Publishing (OIDC)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build sdist + wheel
+        run: |
+          pip install build
+          python -m build
+      - name: Check artifacts
+        run: |
+          pip install twine
+          twine check dist/*
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
