@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "perpsignal"
+version = "0.1.0"
+description = "A backtestable signal engine for perpetual-futures strategies — DSL, indicators, and an honest backtester."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Signalview", email = "community@signalview.xyz" }]
+keywords = ["trading", "backtest", "perpetuals", "hyperliquid", "quant", "signals", "algorithmic-trading"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Financial and Insurance Industry",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "requests>=2.28",
+]
+
+[project.urls]
+Homepage = "https://www.signalview.xyz"
+Repository = "https://github.com/mokshyaprotocol/signalview"
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools]
+packages = ["perpsignal"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

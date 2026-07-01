@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.eggs/
+.pytest_cache/
+.venv/
+venv/
+env/
+data/
+*.parquet
+*.csv
+.DS_Store
+.idea/
+.vscode/
+# never commit secrets or a real fitted-weights file
+.env
+.env.*
+fitted_weights.json
