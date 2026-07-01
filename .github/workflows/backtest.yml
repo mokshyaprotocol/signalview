@@ -20,8 +20,9 @@ jobs:
         run: pip install -e ".[dev]"
       - name: Unit tests
         run: pytest -q
-      - name: Backtest smoke-run
-        # Runs a real end-to-end backtest on synthetic data — proves the
-        # evaluate -> run path works and gives every PR an objective metrics
-        # readout in the logs. Extend this to score submitted strategies.
-        run: PYTHONPATH=. python examples/quickstart.py
+      - name: Backtest leaderboard
+        # Backtests every example signal end-to-end and prints a ranked
+        # leaderboard — proves the evaluate -> discretize -> run path works and
+        # gives every PR an objective metrics readout (incl. any newly submitted
+        # strategy) directly in the logs.
+        run: PYTHONPATH=. python scripts/backtest_signals.py

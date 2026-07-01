@@ -6,7 +6,7 @@ it. Uses synthetic OHLCV so it runs with no network or API keys.
 import numpy as np
 import pandas as pd
 
-from perpsignal import evaluate, run, BacktestConfig, RiskConfig
+from perpsignal import evaluate, discretize, run, BacktestConfig, RiskConfig
 
 
 def synthetic_ohlcv(bars: int = 2000, seed: int = 7) -> pd.DataFrame:
@@ -28,14 +28,20 @@ def synthetic_ohlcv(bars: int = 2000, seed: int = 7) -> pd.DataFrame:
 def main() -> None:
     df = synthetic_ohlcv()
 
-    # Mean-reversion fade: short when price is stretched above its 48-bar mean,
-    # long when stretched below. Any expression that returns a Series works.
-    signal = evaluate("zscore(close, 48) * -1", df)
+    cfg = BacktestConfig(symbol="BTCUSDT", interval="1h")  # holds the entry thresholds
+
+    # Mean-reversion fade: score is high when price is stretched below its 48-bar
+    # mean, low when stretched above. Any expression that returns a Series works.
+    score = evaluate("zscore(close, 48) * -1", df)
+
+    # Map the continuous score to a {-1, 0, +1} position using the config's
+    # long/short thresholds. run() expects a discrete position, not a raw score.
+    position = discretize(score, cfg)
 
     result = run(
         df,
-        signal,
-        BacktestConfig(symbol="BTCUSDT", interval="1h"),
+        position,
+        cfg,
         RiskConfig(),          # leverage, take-profit, stop-loss defaults
         bars_per_year=24 * 365,  # hourly bars
     )

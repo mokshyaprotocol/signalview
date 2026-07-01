@@ -28,19 +28,24 @@ Requires Python 3.10+, `pandas`, `numpy`, `requests`.
 
 ```python
 import pandas as pd
-from perpsignal import evaluate, run, BacktestConfig, RiskConfig
+from perpsignal import evaluate, discretize, run, BacktestConfig, RiskConfig
 
 # df needs columns: open, high, low, close, volume (a DatetimeIndex is ideal)
 df = pd.read_parquet("BTCUSDT-1h.parquet")
 
-# A signal is any expression that evaluates to a Series (positive = long).
-# This one is a mean-reversion fade: short when price is stretched above its
-# 48-bar mean, long when stretched below.
-signal = evaluate("zscore(close, 48) * -1", df)
+cfg = BacktestConfig(symbol="BTCUSDT", interval="1h")  # holds the entry thresholds
+
+# A score is any expression that evaluates to a Series (positive = long).
+# This one is a mean-reversion fade: high when price is stretched below its
+# 48-bar mean, low when stretched above.
+score = evaluate("zscore(close, 48) * -1", df)
+
+# Map the continuous score to a {-1, 0, +1} position via the config thresholds.
+# run() expects a discrete position, not a raw score.
+position = discretize(score, cfg)
 
 result = run(
-    df, signal,
-    BacktestConfig(symbol="BTCUSDT", interval="1h"),
+    df, position, cfg,
     RiskConfig(),            # leverage / take-profit / stop-loss (sane defaults)
     bars_per_year=24 * 365,  # hourly bars
 )

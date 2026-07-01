@@ -1,0 +1,9 @@
+{
+  "name": "Bollinger mean-reversion",
+  "description": "Fade extension from the Bollinger midline: how far close sits above/below the 20-bar mean, in band-width units. Positive score = below the band (buy the dip).",
+  "asset": "BTCUSDT",
+  "timeframe": "1h",
+  "score": "clip((bb_mid(close, 20, 2) - close) / (bb_upper(close, 20, 2) - bb_lower(close, 20, 2) + 0.000001) * 2, -1, 1)",
+  "long_threshold": 0.2,
+  "short_threshold": -0.2
+}

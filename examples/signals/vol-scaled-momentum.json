@@ -1,0 +1,9 @@
+{
+  "name": "Volatility-scaled momentum",
+  "description": "The 24-bar price change measured in ATR units (move / (ATR * horizon)), squashed with tanh. Scale-free, so the same thresholds work across assets and volatility regimes.",
+  "asset": "BTCUSDT",
+  "timeframe": "1h",
+  "score": "tanh((close - prev(close, 24)) / (atr(24) * 24 + 0.000001))",
+  "long_threshold": 0.2,
+  "short_threshold": -0.2
+}

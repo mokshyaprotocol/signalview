@@ -25,6 +25,7 @@ from .backtest import run, BacktestResult
 from .config import BacktestConfig, Costs, RiskConfig
 from .dsl import evaluate, evaluate_bool, parse, parse_with_repair, EvalError, ParseError
 from .signal_def import SignalDef, parse_signal, set_market_meta
+from .signal import discretize, combine
 from . import factors
 
 __all__ = [
@@ -42,6 +43,8 @@ __all__ = [
     "SignalDef",
     "parse_signal",
     "set_market_meta",
+    "discretize",
+    "combine",
     "factors",
     "__version__",
 ]

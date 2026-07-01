@@ -1,0 +1,9 @@
+{
+  "name": "Donchian breakout (20)",
+  "description": "Long when price closes above the PRIOR 20-bar high, short below the prior 20-bar low, flat in between. Uses prev(...) so the current bar's own high/low can't leak into its channel (a classic breakout off-by-one).",
+  "asset": "BTCUSDT",
+  "timeframe": "1h",
+  "score": "if(close >= prev(highest(high, 20), 1), 1, if(close <= prev(lowest(low, 20), 1), -1, 0))",
+  "long_threshold": 0.5,
+  "short_threshold": -0.5
+}

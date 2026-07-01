@@ -1,0 +1,9 @@
+{
+  "name": "EMA trend-follow (ADX-scaled)",
+  "description": "Go with the 20/50 EMA cross, scaled by trend strength (ADX). Flat in chop. A basic trend-following template.",
+  "asset": "BTCUSDT",
+  "timeframe": "1h",
+  "score": "sign(ema(close, 20) - ema(close, 50)) * clip(adx(14) / 40, 0, 1)",
+  "long_threshold": 0.2,
+  "short_threshold": -0.2
+}
