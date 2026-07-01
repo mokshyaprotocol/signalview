@@ -826,6 +826,19 @@ def _bi_prev(ctx, args):
     n = _as_int(args[1], "prev", lo=1, hi=500) if len(args) == 2 else 1
     return series.shift(n)
 
+def _bi_roc(ctx, args):
+    """
+    Rate of Change (ROC) indicator.
+    Formula: (close / prev(close, n)) - 1
+    Usage in DSL: roc(close, 14)
+    """
+    if len(args) != 2:
+        raise EvalError("roc(series, period)")
+    series = _as_series(args[0], ctx.index)
+    period = _as_int(args[1], "roc")
+    
+    prev_series = series.shift(period)
+    return (series / prev_series.replace(0.0, np.nan)).fillna(0.0) - 1
 
 # Math helpers. Each operates element-wise over Series via the underlying
 # numpy/pandas op, so they compose with arithmetic operators naturally.
@@ -888,6 +901,7 @@ BUILTINS: dict[str, Callable] = {
     "bb_lower": _bi_bb_lower, "bb_upper": _bi_bb_upper, "bb_mid": _bi_bb_mid,
     "highest": _bi_highest, "lowest": _bi_lowest,
     "corr": _bi_corr, "prev": _bi_prev,
+    "roc": _bi_roc,
     # math
     "abs": _bi_abs, "sign": _bi_sign, "log": _bi_log, "sqrt": _bi_sqrt,
     "tanh": _bi_tanh, "min": _bi_min, "max": _bi_max, "clip": _bi_clip,
@@ -948,6 +962,7 @@ _BUILTIN_ALIASES: dict[str, str] = {
     "maximum": "max",
     "minimum": "min",
     "where": "if",
+    "rate_of_change": "roc",
 }
 
 
